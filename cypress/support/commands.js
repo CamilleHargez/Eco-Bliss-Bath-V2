@@ -14,6 +14,18 @@ Cypress.Commands.add('login', () => {
     cy.get('[data-cy="nav-link-cart"]')
 })
 
+Cypress.Commands.add('emptyCart', () => {
+    cy.get(`[data-cy="nav-link-cart"]`).click()
+    cy.url().should('include', '/cart')
+    cy.get('body').then(($body) => {
+        if ($body.find('[data-cy="cart-line-delete"]').length > 0) {
+            cy.get('[data-cy="cart-line-delete"]').click()
+        }
+    })
+    cy.get(`[data-cy="nav-link-home"]`).click()
+})
+
+
 Cypress.Commands.add('goToProduct789', () => {
     cy.intercept('GET', '/products/random', { fixture: 'products.json' }).as('getProductsRandom')
     cy.visit('/')

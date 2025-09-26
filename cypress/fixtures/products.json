@@ -14,7 +14,7 @@
   {
     "id": 789,
     "name": "Dans la forêt",
-    "availableStock": 12,
+    "availableStock": -12,
     "skin": "Peau mixte",
     "aromas": "Bois de santal",
     "ingredients": "Soude caustique",
