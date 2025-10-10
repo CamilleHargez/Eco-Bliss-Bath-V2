@@ -15,11 +15,13 @@ Cypress.Commands.add('login', () => {
 })
 
 Cypress.Commands.add('emptyCart', () => {
+    cy.intercept('GET', '**/orders').as('getCart')
     cy.get(`[data-cy="nav-link-cart"]`).click()
     cy.url().should('include', '/cart')
+    cy.wait('@getCart')
     cy.get('body').then(($body) => {
         if ($body.find('[data-cy="cart-line-delete"]').length > 0) {
-            cy.get('[data-cy="cart-line-delete"]').click()
+            cy.get('[data-cy="cart-line-delete"]').click({ multiple: true })
         }
     })
     cy.get(`[data-cy="nav-link-home"]`).click()
@@ -34,29 +36,3 @@ Cypress.Commands.add('goToProduct789', () => {
     cy.get(`[data-cy="product-home-link"]`).eq(1).click()
     cy.get('[data-cy="detail-product-stock"]').should('be.visible')
 })
-
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
