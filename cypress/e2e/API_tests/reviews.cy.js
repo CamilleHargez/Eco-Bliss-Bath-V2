@@ -3,8 +3,8 @@ describe('POST reviews', () => {
     const username = 'test2@test.fr'
     const password = 'testtest'
 
-    it('Ajouter un avis', () => {
-        // Connexion et récupère le token
+    it('Add review', () => {
+        // Login and retrieve token
         cy.request({
             method: 'POST',
             url: `${baseUrl}/login`,
@@ -16,7 +16,7 @@ describe('POST reviews', () => {
             expect(token).to.exist
             const authHeader = { Authorization: `Bearer ${token}` }
 
-            // Ajoute un avis
+            // Add review
             cy.request({
                 method: 'POST',
                 url: `${baseUrl}/reviews`,

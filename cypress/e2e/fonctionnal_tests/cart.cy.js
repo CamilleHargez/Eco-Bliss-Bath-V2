@@ -1,11 +1,11 @@
-describe('Acceder à un produit', () => {
+describe('Access to a product', () => {
     beforeEach(() => {
         cy.intercept('GET', '/products/random', { fixture: 'products.json' }).as('getProductsRandom')
         cy.login()
         cy.wait('@getProductsRandom')
     })
 
-    it('vérifier si un produit peut être ajouté lorsque le stock est supérieur à 0', () => {
+    it('Check if a product can be added to cart when stock is greater than 0', () => {
         cy.intercept('GET', '/products/555', { fixture: 'product-555.json' }).as('getProductWithStock')
         cy.get('[data-cy="product-home-link"]').should('exist')
             .first().click()
@@ -19,7 +19,7 @@ describe('Acceder à un produit', () => {
         })
     })
 
-    it('Vérifier que le bouton d ajout au panier est disabled si le stock égal ou inférieur à 0', () => {
+    it('Check that the add to cart button is disabled if the stock is equal to or less than 0', () => {
         cy.intercept('GET', '/products/789', { fixture: 'product-789.json' }).as('getProductWithoutStock')
         cy.get('[data-cy="product-home-link"]').should('exist')
             .eq(1).click()
@@ -33,7 +33,7 @@ describe('Acceder à un produit', () => {
         })
     })
 
-    it('Vérifier que le champ de disponibilité de mon produit est présent lorsque le stock est positif', () => {
+    it('Check that my products availability field is present when the stock is positive', () => {
         cy.intercept('GET', '/products/555', { fixture: 'product-555.json' }).as('getProductWithStock')
         cy.get('[data-cy="product-home-link"]').should('exist')
             .first().click()
@@ -41,7 +41,7 @@ describe('Acceder à un produit', () => {
         cy.get('[data-cy="detail-product-stock"]').should('exist')
     })
 
-    it('Vérifier que le champ de disponibilité de mon produit est présent lorsque le stock est inférieur ou égal à 0', () => {
+    it('Check that my products availability field is present when the stock is less than or equal to 0', () => {
         cy.intercept('GET', '/products/789', { fixture: 'product-789.json' }).as('getProductWithoutStock')
         cy.get('[data-cy="product-home-link"]').should('exist')
             .eq(1).click()
@@ -51,7 +51,7 @@ describe('Acceder à un produit', () => {
 
 })
 
-describe('Ajouter un élément au panier', () => {
+describe('Add product to cart and check stock', () => {
     beforeEach(() => {
         cy.intercept('GET', '**/orders').as('getCart')
         cy.intercept('PUT', '**/orders/add').as('addToCart')
@@ -60,7 +60,7 @@ describe('Ajouter un élément au panier', () => {
         cy.emptyCart()
     })
 
-    it('Vérifier que le produit a été ajouté au panier', () => {
+    it('Check that the product has been added to cart', () => {
         cy.get('[data-cy="product-home-link"]').first().click()
         cy.wait('@getProducts')
         cy.get('[data-cy="detail-product-name"]').should('be.visible').invoke('text').then((productName) => {
@@ -74,7 +74,7 @@ describe('Ajouter un élément au panier', () => {
 
     })
 
-    it('Vérifier la mise à jour du stock', () => {
+    it('Check stock update', () => {
 
         cy.get('[data-cy="product-home-link"]').first().click()
         cy.get('[data-cy="detail-product-stock"]').invoke('text').then((stockText) => {
@@ -102,7 +102,7 @@ describe('Ajouter un élément au panier', () => {
 
 
 
-    it('Vérifier les limites du stock avec un chiffre négatif', () => {
+    it('Check stock limits with a negative number', () => {
         cy.get('[data-cy="product-home-link"]').first().click()
         cy.get('[data-cy="detail-product-quantity"]').clear().invoke('val', '-10').trigger('input').should('have.class', 'ng-invalid')
         cy.get('[data-cy="detail-product-add"]').click()
@@ -110,13 +110,13 @@ describe('Ajouter un élément au panier', () => {
     })
 
 
-    it('Vérifier les limites du stock avec un chiffre supérieur à 20', () => {
+    it('Check stock limits with a number greater than 20', () => {
         cy.get('[data-cy="product-home-link"]').first().click()
         cy.get('[data-cy="detail-product-quantity"]').clear().invoke('val', '26').trigger('input').should('have.class', 'ng-invalid')
     })
 })
 
-describe('Ajouter un élément au panier', () => {
+describe('Add product to cart with API', () => {
     beforeEach(() => {
         cy.login()
         cy.emptyCart()
@@ -124,7 +124,7 @@ describe('Ajouter un élément au panier', () => {
         cy.intercept('GET', '**/orders').as('getCart')
     })
 
-    it('Vérifier le contenu du panier via API', () => {
+    it('Check cart contents via API', () => {
         cy.get('[data-cy="product-home-link"]').first().click()
 
         cy.url().then((url) => {
@@ -149,9 +149,7 @@ describe('Ajouter un élément au panier', () => {
                     expect(orderLines).to.exist
 
                     const found = orderLines.find(line => String(line.product.id) === String(productId))
-                    expect(found, `Le produit ${productId} doit être présent dans le panier`).to.exist
-
-
+                    expect(found, `The product ${productId} should be in cart`).to.exist
                 })
             })
 

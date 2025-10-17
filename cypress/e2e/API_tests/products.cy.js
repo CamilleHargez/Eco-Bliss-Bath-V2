@@ -2,7 +2,7 @@ describe('GET products/{id}', () => {
     const expectedId = 5
     const expectedName = 'Poussière de lune'
 
-    it('Requete une fiche produit specifique', () => {
+    it('Specific product sheet query', () => {
         cy.request({
             method: 'GET',
             url: 'http://localhost:8081/products/5'

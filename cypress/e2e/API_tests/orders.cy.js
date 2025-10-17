@@ -2,11 +2,11 @@ describe('GET orders', () => {
     const baseUrl = 'http://localhost:8081'
     const username = 'test2@test.fr'
     const password = 'testtest'
-    const productInStockId = 5  
+    const productInStockId = 5
     const productOutOfStockId = 3
 
-    it('Requete de la liste des produits du panier', () => {
-        // Connexion et récupère le token
+    it('Products cart list query', () => {
+        // Login and retrieve token
         cy.request({
             method: 'POST',
             url: `${baseUrl}/login`,
@@ -18,7 +18,7 @@ describe('GET orders', () => {
             expect(token).to.exist
             const authHeader = { Authorization: `Bearer ${token}` }
 
-            // Récupère le panier en cours et supprime les produits qui s'y trouve
+            // Retrieve the current cart and delete the products in it
             cy.request({
                 method: 'GET',
                 url: `${baseUrl}/orders`,
@@ -40,7 +40,7 @@ describe('GET orders', () => {
                     })
                 }
 
-                // Ajoute un produit en stock au panier
+                // Add a product in stock to cart
                 cy.request({
                     method: 'PUT',
                     url: `${baseUrl}/orders/add`,
@@ -49,7 +49,7 @@ describe('GET orders', () => {
                 }).then((addProductResponse) => {
                     expect(addProductResponse.status).to.eq(200)
 
-                    // Vérifie que le produit en stock se trouve dans le panier
+                    // Checks that the product in stock is in the cart
                     cy.request({
                         method: 'GET',
                         url: `${baseUrl}/orders`,
@@ -59,17 +59,16 @@ describe('GET orders', () => {
                         const found = cartResponse.body.orderLines.find(l => String(l.product?.id) === String(productInStockId))
                         expect(found).to.exist
                     })
-
-                    // Ajoute un produit en rupture de stock au panier et vérifie qu'on reçoit une erreur 
-                    cy.request({
-                        method: 'PUT',
-                        url: `${baseUrl}/orders/add`,
-                        headers: authHeader,
-                        body: { productId: productOutOfStockId, quantity: 1 },
-                        failOnStatusCode: false
-                    }).then((noStockResponse) => {
-                        expect(noStockResponse.status).to.not.eq(200)
-                    })
+                })
+                // Add an out-of-stock product to cart and check that we receive an error
+                cy.request({
+                    method: 'PUT',
+                    url: `${baseUrl}/orders/add`,
+                    headers: authHeader,
+                    body: { product: productOutOfStockId, quantity: 1 },
+                    failOnStatusCode: false
+                }).then((noStockResponse) => {
+                    expect(noStockResponse.status).to.not.eq(200)
                 })
             })
         })

@@ -4,7 +4,7 @@ describe('XSS vulnerability', () => {
         cy.visit('#/reviews')
     })
 
-    it('title should not allow script execution', () => {
+    it('Review should not allow script execution', () => {
         const payloadTitle = '<script>window.__xss_title = true;</script>'
         const payloadComment = '<script>window.__xss_comment = true;</script>'
 

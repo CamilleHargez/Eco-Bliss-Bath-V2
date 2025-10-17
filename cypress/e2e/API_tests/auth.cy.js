@@ -1,6 +1,6 @@
 describe('GET orders', () => {
 
-    it('Sans token', () => {
+    it('Without token', () => {
         cy.request({
             method: 'GET',
             url: 'http://localhost:8081/orders',
@@ -10,12 +10,12 @@ describe('GET orders', () => {
         })
     })
 
-    it('Avec token erroné', () => {
+    it('With wrong token', () => {
         cy.request({
             method: 'GET',
             url: 'http://localhost:8081/orders',
             headers: {
-                Authorization: 'Bearer token_invalide'
+                Authorization: 'Bearer invalid_token'
             },
             failOnStatusCode: false
         }).then((response) => {
@@ -26,7 +26,7 @@ describe('GET orders', () => {
 
 describe('POST login', () => {
 
-    it('bon nom utilisateur mauvais mot de passe', () => {
+    it('username and wrong password', () => {
         cy.request({
             method: 'POST',
             url: 'http://localhost:8081/login',
@@ -40,7 +40,7 @@ describe('POST login', () => {
         })
     })
 
-     it('mauvais nom utilisateur bon mot de passe', () => {
+     it('wrong username and password', () => {
         cy.request({
             method: 'POST',
             url: 'http://localhost:8081/login',
@@ -54,7 +54,7 @@ describe('POST login', () => {
         })
     })
 
-    it('bon nom utilisateur bon mot de passe', () => {
+    it('username and password', () => {
         cy.request({
             method: 'POST',
             url: 'http://localhost:8081/login',

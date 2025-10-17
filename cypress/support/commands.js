@@ -26,13 +26,3 @@ Cypress.Commands.add('emptyCart', () => {
     })
     cy.get(`[data-cy="nav-link-home"]`).click()
 })
-
-
-Cypress.Commands.add('goToProduct789', () => {
-    cy.intercept('GET', '/products/random', { fixture: 'products.json' }).as('getProductsRandom')
-    cy.visit('/')
-    cy.wait('@getProductsRandom')
-    cy.intercept('GET', `/products/789`, { fixture: `product-789.json` }).as('getProductDetail')
-    cy.get(`[data-cy="product-home-link"]`).eq(1).click()
-    cy.get('[data-cy="detail-product-stock"]').should('be.visible')
-})
