@@ -146,7 +146,7 @@ describe('Ajouter un élément au panier', () => {
                     expect(resp.status).to.eq(200)
 
                     const orderLines = resp.body.orderLines
-                    expect(orderLines, 'orderLines doit exister').to.exist
+                    expect(orderLines).to.exist
 
                     const found = orderLines.find(line => String(line.product.id) === String(productId))
                     expect(found, `Le produit ${productId} doit être présent dans le panier`).to.exist
