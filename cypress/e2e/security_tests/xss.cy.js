@@ -16,15 +16,13 @@ describe('XSS vulnerability', () => {
         cy.get('[data-cy="review-input-rating-images"] img')
             .eq(1)
             .click()
-
+        cy.wait(500)
         cy.get('[data-cy="review-submit"]').click()
         cy.wait('@getReviews').then(() => {
-            cy.wait(5000)
-        })
-
         cy.window().its('__xss_title').should('be.undefined')
 
         cy.get('[data-cy="review-detail"]').find('script').should('not.exist')
         cy.get('[data-cy="review-detail"]').invoke('html').should('not.contain', '<script>')
+        })
     })
 })

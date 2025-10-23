@@ -77,21 +77,25 @@ describe('Add product to cart and check stock', () => {
     it('Check stock update', () => {
 
         cy.get('[data-cy="product-home-link"]').first().click()
+        cy.wait('@getProducts').then(() => {
+            cy.wait(2000)
+        })
         cy.get('[data-cy="detail-product-stock"]').invoke('text').then((stockText) => {
             const stockQuantity = parseInt(stockText, 10) || 0
 
             cy.get('[data-cy="detail-product-add"]').click()
 
-            cy.wait('@getCart').its('response.statusCode').should('eq', 200)
-            cy.get('[data-cy="detail-product-add"]').click()
-            cy.get('[data-cy="detail-product-add"]').click()
-
-
-            cy.url().should('eq', 'http://localhost:4200/#/cart')
-
-            cy.get('[data-cy="cart-line-name"]').should('exist')
+            cy.wait('@getCart').its('response.statusCode').should('eq', 200).then(() => {
+                cy.wait(5000)
+                cy.url().should('eq', 'http://localhost:4200/#/cart')
+                cy.get('[data-cy="cart-line-name"]').should('exist')
+            })
+         
 
             cy.go('back')
+            cy.wait('@getProducts').then(() =>{
+                cy.wait(2000)
+            })
             cy.get('[data-cy="detail-product-stock"]').invoke('text').then((stockText) => {
                 const newStockQuantity = parseInt(stockText, 10) || 0
 
@@ -113,6 +117,8 @@ describe('Add product to cart and check stock', () => {
     it('Check stock limits with a number greater than 20', () => {
         cy.get('[data-cy="product-home-link"]').first().click()
         cy.get('[data-cy="detail-product-quantity"]').clear().invoke('val', '26').trigger('input').should('have.class', 'ng-invalid')
+        cy.get('[data-cy="detail-product-add"]').click()
+        cy.url().should('include', '/products')
     })
 })
 

@@ -22,7 +22,7 @@ Clonez le projet pour le récupérer
 git clone https://github.com/OpenClassrooms-Student-Center/Eco-Bliss-Bath-V2.git
 cd Eco-Bliss-Bath-V2
 ```
-Pour démarrer l'API avec ça base de données.
+Pour démarrer l'API avec sa base de données.
 ```
 docker compose up -d
 ```
@@ -38,3 +38,14 @@ ou
 npm install (si vous préférez)
 ```
 
+# Pour lancer les tests Cypress 
+Installer Cypress
+```
+npm install cypress --save-dev
+```
+Initialiser Cypress 
+```
+npx cypress open
+```
+Choisir E2E Testing sur l'interface graphique qui vient de s'ouvrir.
+Choisir le test à executer. 
