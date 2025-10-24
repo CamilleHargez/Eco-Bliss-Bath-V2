@@ -90,7 +90,7 @@ describe('Add product to cart and check stock', () => {
                 cy.url().should('eq', 'http://localhost:4200/#/cart')
                 cy.get('[data-cy="cart-line-name"]').should('exist')
             })
-         
+
 
             cy.go('back')
             cy.wait('@getProducts').then(() =>{
@@ -135,8 +135,7 @@ describe('Add product to cart with API', () => {
 
         cy.url().then((url) => {
             const productId = url.split('/').pop()
-
-            cy.get('[data-cy="detail-product-add"]').click()
+            cy.wait(500)
             cy.get('[data-cy="detail-product-add"]').click()
 
             cy.wait('@addToCart').its('response.statusCode').should('eq', 200)

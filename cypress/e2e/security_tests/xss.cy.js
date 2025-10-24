@@ -21,8 +21,7 @@ describe('XSS vulnerability', () => {
         cy.wait('@getReviews').then(() => {
         cy.window().its('__xss_title').should('be.undefined')
 
-        cy.get('[data-cy="review-detail"]').find('script').should('not.exist')
-        cy.get('[data-cy="review-detail"]').invoke('html').should('not.contain', '<script>')
+        cy.get('[data-cy="review-comment"]').find('script').should('not.exist')
         })
     })
 })

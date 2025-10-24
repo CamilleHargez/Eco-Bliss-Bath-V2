@@ -39,13 +39,18 @@ npm install (si vous préférez)
 ```
 
 # Pour lancer les tests Cypress 
-Installer Cypress
+Installer Cypress : 
 ```
 npm install cypress --save-dev
 ```
-Initialiser Cypress 
+Ouvrir et initialiser Cypress : 
 ```
 npx cypress open
 ```
 Choisir E2E Testing sur l'interface graphique qui vient de s'ouvrir.
 Choisir le test à executer. 
+
+ou lancer tous les tests Cypress sans ouvrir l'interface graphique : 
+```
+npx cypress run 
+```
